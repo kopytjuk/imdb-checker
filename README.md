@@ -2,11 +2,11 @@
 
 Given an IMDB list check availability on Netflix, Amazon Prime & Co.
 
-![screenshot](screenshot-small.png)
+![screenshot](assets/screenshot-small.png)
 
 ## Architecture
 
-![alternative text](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.github.com/plantuml/plantuml-server/master/src/main/webapp/resource/test2diagrams.txt)
+![alternative text](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/kopytjuk/imdb-checker/main/architecture.puml)
 
 A web-client (browser) sends an IMDb url to the server which returns the availability result after it is processed.
 

@@ -1,0 +1,29 @@
+{% extends "index.html" %}
+{% block content %}
+<div>Just paste the link to your <b>public watchlist</b>, select your location and press check!</div>
+<div>
+    Supported providers:
+    <img src="static/assets/netflix.png" width="30" style="margin: 10px" alt="">
+    <img src="static/assets/prime.png" width="30" style="margin: 10px" alt="">
+    <img src="static/assets/disney.png" width="30" style="margin: 10px" alt="">
+</div>
+<div class="input-group mb-3 mt-3">
+    <input type="text" class="form-control" value="https://www.imdb.com/list/ls086530738/" placeholder="URL to your IMDb watchlist"
+        aria-label="Link to IMDB watchlist" aria-describedby="check_button" id="url_input">
+    <select class="custom-select col-lg-2" id="location_code_selector" aria-label="Select your location">
+        <option value="de_DE" selected>Germany</option>
+        <option value="en_US">United States</option>
+        <option value="de_AT">Austria</option>
+        <option value="de_CH">Switzerland</option>
+        <option value="en_GB">United Kingdom</option>
+        <option value="fr_FR">France</option>
+        <option value="ru_RU">Russia</option>
+        <option value="en_NL">Netherlands</option>
+    </select>
+    <div class="input-group-append">
+        <button class="btn btn-primary" type="button" id="check_button"><b>Check!</b></button>
+    </div>
+</div>
+<div class="container mt-3" id="result_area">
+</div>
+{% endblock %}

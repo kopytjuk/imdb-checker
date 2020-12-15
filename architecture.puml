@@ -1,0 +1,27 @@
+@startuml
+!include <cloudinsight/redis>
+!include <cloudinsight/rabbitmq>
+
+[Web Client\n(Browser)] as client
+
+package Heroku {
+  [uvicorn & fastAPI] as api
+  [Celery Worker] as celery
+  component "<$redis>\nRedis" as state
+  component "<$rabbitmq>\nCloudAMQP" as queue
+}
+
+cloud {
+[OMDB]
+[JustWatch]
+}
+
+client <-> api
+api -down-> queue
+api <-down-> state
+queue --> celery
+celery <-> state
+
+OMDB -up-> celery
+JustWatch -up-> celery
+@enduml

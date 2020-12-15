@@ -1,0 +1,14 @@
+uvicorn
+fastapi
+beautifulsoup4
+pytest
+pandas
+tabulate
+click
+requests
+tqdm
+celery[redis]
+sqlalchemy
+notifiers
+aiofiles
+Jinja2

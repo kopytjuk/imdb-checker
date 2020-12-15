@@ -1,0 +1,38 @@
+{% extends "index.html" %}
+{% block content %}
+<div class="container text-left">
+
+    <div class="mb-3">
+        If you have any questions, bug requests or errors regarding your watchlist, please let me know!
+        I will reply to your mail when the feature is done or bug is fixed!
+    </div>
+
+    <form>
+        <div class="form-group">
+            <label for="contactName">Your Name*</label>
+            <input type="text" class="form-control" id="contactName" placeholder="A nice user">
+        </div>
+        <div class="form-group">
+            <label for="contactEMail">E-Mail address</label>
+            <input type="email" class="form-control" id="contactEMail" placeholder="name@example.com">
+        </div>
+        <div class="form-group">
+            <label for="exampleFormControlSelect1">Reason*</label>
+            <select class="form-control" id="contactReason">
+                <option value=1>Bug</option>
+                <option value=2 selected>Feature Request</option>
+                <option value=3>Other</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="contactMessage">Your message*</label>
+            <textarea class="form-control" id="contactMessage" rows="5"></textarea>
+        </div>
+        <button type="submit" id="send_message_button" class="btn btn-primary col-lg-3">✉️ Send</button>
+        <div>
+            * required fields
+        </div>
+    </form>
+</div>
+
+{% endblock %}

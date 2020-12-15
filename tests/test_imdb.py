@@ -1,6 +1,7 @@
 import pytest
 
-from imdb import _get_pageId, _get_watchlist
+from logic.imdb import _get_pageId, _get_watchlist
+
 
 def test_get_pageId():
 

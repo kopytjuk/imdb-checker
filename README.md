@@ -1,5 +1,7 @@
 # IMDB Stream Checker
 
+Try it out: [https://imdb-checker.herokuapp.com/](https://imdb-checker.herokuapp.com/)
+
 Given an IMDB list check availability on Netflix, Amazon Prime & Co.
 
 ![screenshot](assets/screenshot-small.png)

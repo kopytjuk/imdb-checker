@@ -46,7 +46,8 @@ function doPoll(task_id) {
                     break;
 
                 default:
-                    fillResultsArea('</br><img src="static/assets/error.png" width="50" alt=""></br></br><p>Something went wrong. Please try again or <a href="/contact">✉️ contact</a> me!</p>');
+                    // failure
+                    fillResultsArea('</br><img src="static/assets/error.png" width="50" alt=""></br></br><p>'+ data.message + '<br/>Please try again or <a href="/contact">✉️ contact</a> me!</p>');
                     break;
 
             }

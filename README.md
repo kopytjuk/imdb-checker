@@ -49,6 +49,7 @@ First install the requirements:
 
 ```
 pip install -r requirements.txt
+choco install rabbitmq
 ```
 
 Set environment variables (if not set):

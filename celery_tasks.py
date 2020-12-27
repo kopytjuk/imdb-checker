@@ -65,9 +65,10 @@ def run_check(self, url: str, location_code: str) -> dict:
     try:
         response_dict["result"] = check(url_to_check, user_location, pt)
     except Exception as e:
-        self.update_state(state=FAILURE, meta={"message": str(e)})
+        self.update_state(state=FAILURE, meta={"exc_type": "Error",
+                                               "exc_message ": str(e)})
         raise e
-    
+
     pt.info("Finalizing ...")
 
     return response_dict

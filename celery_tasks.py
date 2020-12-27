@@ -5,11 +5,11 @@ from celery import Celery
 from celery.states import FAILURE
 
 from logic.watchlist_checker import check
+from logic.config import default_config
 
-from logic.config import CELERY_BROKER_URL as broker_url
-from logic.config import CELERY_RESULT_URL as result_url
-from logic.config import CELERY_BROKER_POOL_LIMIT as broker_pool_limit
-
+broker_url = default_config.CELERY_BROKER_URL
+result_url = default_config.CELERY_RESULT_URL
+broker_pool_limit = default_config.CELERY_BROKER_POOL_LIMIT
 
 print("Using %s for broker." % broker_url[:20])
 
@@ -62,10 +62,11 @@ def run_check(self, url: str, location_code: str) -> dict:
 
     response_dict = {"result": None}
 
-    if not url_to_check.startswith("https://www.imdb.com/"):
-        self.update_state(state=FAILURE)
-    else:
+    try:
         response_dict["result"] = check(url_to_check, user_location, pt)
+    except Exception as e:
+        self.update_state(state=FAILURE, meta={"message": str(e)})
+        raise e
     
     pt.info("Finalizing ...")
 
@@ -87,6 +88,9 @@ def get_state_by_id(id: str) -> bool:
     if state == "PROGRESS":
         info = job.info
         message = info["message"]
+    elif state == "FAILURE":
+        error = job.info
+        message = str(error)
     return state, message
 
 

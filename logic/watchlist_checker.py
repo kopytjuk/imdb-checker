@@ -32,7 +32,7 @@ def check(watchlist_url: str, location_code: str, progress_tracker=None) -> List
     if "www.imdb.com" in watchlist_url:
         wp = IMDbWatchlistGetter()
     else:
-        raise WatchlistError(watchlist_url)
+        raise ValueError("URL seems not to be a valid IMDb link.")
 
     validate_location_code(location_code)
 

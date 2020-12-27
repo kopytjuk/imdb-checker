@@ -1,9 +1,10 @@
 import os
 
 from notifiers import get_notifier
+from .config import default_config
 
-from .config import TELEGRAM_BOT_TOKEN as token
-from .config import TELEGRAM_CHAT_ID as chat_id
+token = default_config.TELEGRAM_BOT_TOKEN
+chat_id = default_config.TELEGRAM_CHAT_ID
 
 notifier = get_notifier('telegram')
 

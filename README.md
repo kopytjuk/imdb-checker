@@ -33,7 +33,7 @@ The address to this queue is set via `CELERY_BROKER_URL` environment variable.
 
 If not set, Celery will use `amqp://localhost`.
 
-### Radis
+### Redis
 
 In order to store processed results Celery requires a result store. The address to the result store is set via `CELERY_RESULT_URL` environment variable.
 

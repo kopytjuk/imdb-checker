@@ -15,5 +15,5 @@ class BaseWatchlistGetter(abc.ABC):
 class WatchlistError(Exception):
     """Base class for other exceptions"""
     def __init__(self, url: str):
-        message = "Watchlist '%s' is not supported."
+        message = "Watchlist '%s' is not supported." % url
         super().__init__(message)

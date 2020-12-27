@@ -3,7 +3,9 @@ import requests
 from urllib.parse import quote_plus
 from typing import Union, List
 
-from .config import OMDB_API_KEY
+from .config import default_config
+
+OMDB_API_KEY = default_config.OMDB_API_KEY
 
 
 MediaInfo = namedtuple("MediaInfo", ["name", "description", "poster"])

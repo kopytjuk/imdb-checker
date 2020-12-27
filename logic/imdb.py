@@ -1,5 +1,5 @@
 import io
-from typing import List
+from typing import List, Union
 import math
 
 import requests
@@ -15,8 +15,8 @@ class IMDbWatchlistGetter(BaseWatchlistGetter):
 
         try:
             df = _get_watchlist(_get_pageId(url))
-        except:
-            raise WatchlistError(url)
+        except Exception:
+            raise ValueError("Watchlist URL is not public or not valid.")
 
         watchlist_elements = list()
 
@@ -40,7 +40,7 @@ def _get_pageId(url: str) -> str:
     return pageId
 
 
-def _get_watchlist(pageId: str) -> pd.DataFrame:
+def _get_watchlist(pageId: str) -> Union[pd.DataFrame, None]:
 
     response = requests.get("https://www.imdb.com/list/{:s}/export".format(pageId))
 
@@ -60,4 +60,3 @@ def get_imdb_id_from_url(url: str) -> str:
 
 def get_watchlist(url: str) -> pd.DataFrame:
     return _get_watchlist(_get_pageId(url))
-

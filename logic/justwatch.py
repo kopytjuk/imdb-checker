@@ -14,6 +14,8 @@ STREAM_PROVIDERS = {
     "Disney+": 337
 }
 
+STREAM_PROVIDERS_NAMES = list(STREAM_PROVIDERS.keys())
+
 STREAM_PROVIDERS_INV = {v: k for k, v in STREAM_PROVIDERS.items()}
 
 session = retry_session(3)
@@ -136,5 +138,7 @@ def availability_table(watchlist_elements: List[WatchlistElement], location_code
 
     df = pd.DataFrame(avail_list)
     df = df.set_index("Name")
+
+    df["num_available"] = df[STREAM_PROVIDERS_NAMES].sum(axis=1)
 
     return df

@@ -1,6 +1,6 @@
 from typing import Union, List
 
-from .justwatch import availability_table
+from .justwatch import availability_table, STREAM_PROVIDERS_NAMES
 from .imdb import IMDbWatchlistGetter
 from .omdb import get_media_info, MediaInfo
 
@@ -13,9 +13,10 @@ def finalize_result(name: str, year: Union[int, None], availability: dict, movie
     result = {
         "name": name,
         "year": year if year else "n/a",
-        "availability": availability,
+        "availability": { provider: availability[provider] for provider in STREAM_PROVIDERS_NAMES},
         "poster": movie_info.poster if movie_info else "",
-        "description": movie_info.description if movie_info else "n/a"
+        "description": movie_info.description if movie_info else "n/a",
+        "num_available": availability["num_available"]
     }
     return result
 

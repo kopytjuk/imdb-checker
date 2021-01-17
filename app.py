@@ -35,8 +35,17 @@ class WatchlistURL(BaseModel):
 class TaskInfo(BaseModel):
     task_id: str
 
+
+class ResultElement(BaseModel):
+    name: str
+    year: str
+    availability: dict
+    poster: str
+    description: str
+    num_available: int
+
 class Result(BaseModel):
-    result: List
+    result: List[ResultElement]
 
 
 class Reason(Enum):

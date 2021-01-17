@@ -32,7 +32,7 @@ function doPoll(task_id) {
                         body: JSON.stringify({"task_id": task_id}),
                         headers: { 'Content-Type': 'application/json' }
                     });
-                    resp_json = response.json().then(data => fillResultsArea(generatedRenderedHTML(data)));
+                    resp_json = response.json().then(data => renderTable('result_area', data));
                     break;
                 
                 case "PENDING":
@@ -57,46 +57,9 @@ function doPoll(task_id) {
 }
 
 function fillResultsArea(html_content) {
+    
     $("#result_area").html(html_content);
 }
-
-function generatedRenderedHTML(result) {
-
-    // console.log("Rendering", result)
-
-    rendered_html = "";
-    result["result"].forEach(function (item, index) {
-
-        availability = item["availability"];
-
-        item_html = `<div class="row mt-3">
-        <div class="col-lg-2 col-12">
-        <img src="${item["poster"]}" alt="" height="200">
-        </div>
-        <div class="col-lg-2 col-12">
-        ${item["name"]}</br>
-        (${item["year"]})
-        </div>
-        <div class="col-lg-5 col-12">
-        ${item["description"]}
-        </div>
-        <div class="col-lg-1 col-4">
-            ${availability["Netflix"] ? '<img src="static/assets/netflix.png" width="30" alt="">' : '<img src="static/assets/netflix.png" width="30" style="opacity:0.1" alt="">' }
-        </div>
-        <div class="col-lg-1 col-4">
-            ${availability["Amazon"] ? '<img src="static/assets/prime.png" width="30" alt="">' : '<img src="static/assets/prime.png" width="30" style="opacity:0.1" alt="">' }
-        </div>
-        <div class="col-lg-1 col-4">
-            ${availability["Disney+"] ? '<img src="static/assets/disney.png" width="30" alt="">' : '<img src="static/assets/disney.png" width="30" style="opacity:0.1" alt="">' }
-        </div>
-        </div>
-        `;
-        rendered_html = rendered_html + item_html;
-    });
-    return rendered_html
-}
-
-
 
 $("#check_button").bind("click", function () {
     fillResultsArea('<div class="lds-facebook"><div></div><div></div><div></div></div><p id="progress_text">Can take a few minutes ...</p>');

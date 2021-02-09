@@ -36,6 +36,8 @@ def test_availability_table(location_code: str):
     assert isinstance(avail_df, pd.DataFrame)
     assert len(avail_df) == 4
 
+    print(avail_df)
+
     if location_code == "de_DE":
         
         # John Wick Chapter 2

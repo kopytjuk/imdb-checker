@@ -23,19 +23,30 @@ class Offer(BaseModel):
     provider_id: int
     urls: dict
 
+class ExternalId(BaseModel):
+    provider: str
+    external_id: str
+
 class MediaEntity(BaseModel):
     jw_entity_id: str
     id: int
     object_type: str
     original_title: str
     offers: Optional[List[Offer]]
-    external_ids: List[dict]
+    external_ids: List[ExternalId]
     runtime: Optional[int]
     full_path: Optional[str]
     title: str
     original_title: str
     original_release_year: int
 
+
+def is_same_imdb_id(entity: MediaEntity, imdb_id: str) -> False:
+
+    for ext in entity.external_ids:
+        if ext.provider == "imdb":
+            return ext.external_id == imdb_id
+    return False
 
 session = retry_session(3)
 
@@ -103,7 +114,7 @@ def check_offers(offers: List[Offer]) -> dict:
     return result
 
 
-def availability(movie_name: str, year: Union[int, None], location_code: str) -> dict:
+def availability(movie_name: str, year: Union[int, None], imdb_id: str, location_code: str) -> dict:
 
     movie_id = get_movie_id(movie_name, year, location_code)
 
@@ -119,6 +130,9 @@ def availability(movie_name: str, year: Union[int, None], location_code: str) ->
         entity = get_entity_by_id(movie_id, location_code)
 
         if not entity:
+            return result
+
+        if not is_same_imdb_id(entity, imdb_id):
             return result
 
         if year:
@@ -139,15 +153,15 @@ def availability_table(watchlist_elements: List[WatchlistElement], location_code
 
     pool = ThreadPool(4)
 
-    def check_avail(movie: str, year: Union[int, None]):
+    def check_avail(movie: str, year: Union[int, None], imdb_id: str):
 
-        avail: dict = availability(movie, year, location_code)
+        avail: dict = availability(movie, year, imdb_id, location_code)
         avail["Name"] = movie
         
         return avail
 
     avail_list = pool.starmap(
-        check_avail, [(e.name, e.year) for e in watchlist_elements])
+        check_avail, [(e.name, e.year, e.imdb_id) for e in watchlist_elements])
 
     df = pd.DataFrame(avail_list)
     df = df.set_index("Name")

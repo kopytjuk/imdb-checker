@@ -1,20 +1,27 @@
+from collections import namedtuple
+
 import pytest
 
 from logic.imdb import _get_pageId, _get_watchlist
 
 
-def test_get_pageId():
+TestCase = namedtuple("TestCase", ["url", "pageId"])
 
-    url = "https://www.imdb.com/user/ur58171394/watchlist"
+test_cases = [
+    TestCase("https://www.imdb.com/user/ur58171394/watchlist", "ls073803218"),
+    TestCase("https://www.imdb.com/user/ur85031360/watchlist", "ls021228741"),
+]
 
-    pageId = _get_pageId(url)
+@pytest.mark.parametrize("url,pageId", [(tc.url, tc.pageId) for tc in test_cases])
+def test_get_pageId(url: str, pageId: str):
 
-    assert pageId == "ls073803218"
+    pageId_ = _get_pageId(url)
+
+    assert pageId == pageId_
 
 
-def test_get_watchlist():
-
-    pageId = "ls073803218"
+@pytest.mark.parametrize("pageId", [tc.pageId for tc in test_cases])
+def test_get_watchlist(pageId):
 
     df = _get_watchlist(pageId)
 

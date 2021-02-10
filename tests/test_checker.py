@@ -7,6 +7,7 @@ from logic.watchlist_provider import WatchlistError
 WATCHLISTS = [
     "https://www.imdb.com/user/ur58171394/watchlist",
     "https://www.imdb.com/user/ur5205364/watchlist",  # large
+    "https://www.imdb.com/user/ur85031360/watchlist",
 ]
 
 @pytest.mark.parametrize("location_code", ["de_DE", "en_GB", "en_US"])

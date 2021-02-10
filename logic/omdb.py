@@ -3,14 +3,14 @@ import requests
 from urllib.parse import quote_plus
 from typing import Union, List
 
-from .config import default_config
+from .config import default_config, memory
 
 OMDB_API_KEY = default_config.OMDB_API_KEY
-
 
 MediaInfo = namedtuple("MediaInfo", ["name", "description", "poster"])
 
 
+@memory.cache()
 def get_media_info(imdb_id: str) -> MediaInfo:
 
     omdb_url = "http://www.omdbapi.com/?apikey=%s&i=%s" % (OMDB_API_KEY, imdb_id)
@@ -27,6 +27,7 @@ def get_media_info(imdb_id: str) -> MediaInfo:
     return m
 
 
+@memory.cache()
 def get_media_info_by_name_and_year(name: str, year: Union[int, None]) -> Union[MediaInfo, None]:
 
     url = "http://www.omdbapi.com/?apikey=%s&t=%s" % (OMDB_API_KEY, quote_plus(name))

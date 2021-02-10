@@ -1,5 +1,6 @@
 import os
 
+from joblib import Memory
 from pydantic import (
     BaseSettings,
     Field,
@@ -29,3 +30,6 @@ default_config = AppSettings()
 
 SUPPORTED_LOCATION_CODES = ["de_DE", "de_AT", "de_CH", "en_GB", "fr_FR",
                             "ru_RU", "en_US", "en_NL"]
+
+# 100MB cache
+memory = Memory(".cache", verbose=0, bytes_limit=1024*1024*100)

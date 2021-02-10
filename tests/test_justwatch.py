@@ -28,13 +28,16 @@ def test_availability_table(location_code: str):
         WatchlistElement("John Wick", 2014, "tt2911666"),
         WatchlistElement("John Wick: Chapter 2", 2017, "tt4425200"),
         WatchlistElement("Inception", 2010, "tt1375666"),
-        WatchlistElement("Around the World in Eighty Days", 1956, "tt0048960")
+        WatchlistElement("Around the World in Eighty Days", 1956, "tt0048960"),
+        WatchlistElement("Woman Walks Ahead", 2017, "tt5436228")
     ]
 
     avail_df = availability_table(elements, location_code)
 
     assert isinstance(avail_df, pd.DataFrame)
-    assert len(avail_df) == 4
+    assert len(avail_df) == len(elements)
+
+    print(avail_df)
 
     if location_code == "de_DE":
         
@@ -47,3 +50,8 @@ def test_availability_table(location_code: str):
         assert avail_df.iloc[3]["Netflix"] == False
         assert avail_df.iloc[3]["Amazon"] == False
         assert avail_df.iloc[3]["Disney+"] == False
+
+        # Woman Walks Ahead from 2017
+        assert avail_df.iloc[4]["Netflix"] == False
+        assert avail_df.iloc[4]["Amazon"] == False
+        assert avail_df.iloc[4]["Disney+"] == False

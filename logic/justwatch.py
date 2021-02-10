@@ -52,6 +52,7 @@ def is_same_imdb_id(entity: MediaEntity, imdb_id: str) -> False:
 session = retry_session(3)
 
 
+@memory.cache()
 def get_movie_id(movie_name: str, year: Union[int, None], location: str = "de_DE") -> Union[str, None]:
 
     search_url_base = "https://apis.justwatch.com/content/titles/{:s}/popular?body={:s}"
@@ -115,7 +116,6 @@ def check_offers(offers: List[Offer]) -> dict:
     return result
 
 
-@memory.cache()
 def availability(movie_name: str, year: Union[int, None], imdb_id: str, location_code: str) -> dict:
 
     movie_id = get_movie_id(movie_name, year, location_code)

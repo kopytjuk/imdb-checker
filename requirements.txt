@@ -12,3 +12,4 @@ sqlalchemy
 notifiers
 aiofiles
 Jinja2
+joblib

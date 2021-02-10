@@ -8,6 +8,7 @@ from pydantic import BaseModel, ValidationError
 
 from .watchlist_provider import WatchlistElement
 from .web_utils import retry_session
+from .config import memory
 
 STREAM_PROVIDERS = {
     "Amazon": 9,
@@ -114,6 +115,7 @@ def check_offers(offers: List[Offer]) -> dict:
     return result
 
 
+@memory.cache()
 def availability(movie_name: str, year: Union[int, None], imdb_id: str, location_code: str) -> dict:
 
     movie_id = get_movie_id(movie_name, year, location_code)

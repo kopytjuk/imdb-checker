@@ -1,14 +1,15 @@
 from typing import Union, List
 
 from .justwatch import availability_table, STREAM_PROVIDERS_NAMES
-from .imdb import IMDbWatchlistGetter
+from .imdb_provider import IMDbWatchlistGetter
 from .omdb import get_media_info, MediaInfo
 
 from .watchlist_provider import WatchlistError
 from .config import SUPPORTED_LOCATION_CODES
+from .datatypes import ResultElement
 
 
-def finalize_result(name: str, year: Union[int, None], availability: dict, movie_info: Union[MediaInfo, None]):
+def finalize_result(name: str, year: Union[int, None], availability: dict, movie_info: dict) -> ResultElement:
 
     result = {
         "name": name,

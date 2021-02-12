@@ -1,6 +1,6 @@
 async function getResults(imdb_url, location_code) {
     console.log("Querying " + imdb_url);
-    const response = await fetch("check_imdb_list",
+    const response = await fetch("check_imdb_top_250",
         {
             method: "POST",
             body: JSON.stringify({ url: imdb_url, location_code: location_code }),

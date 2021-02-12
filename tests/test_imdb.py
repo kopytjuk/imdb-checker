@@ -2,7 +2,7 @@ from collections import namedtuple
 
 import pytest
 
-from logic.imdb import _get_pageId, _get_watchlist
+from logic.imdb_provider import _get_pageId, _get_watchlist
 
 
 TestCase = namedtuple("TestCase", ["url", "pageId"])

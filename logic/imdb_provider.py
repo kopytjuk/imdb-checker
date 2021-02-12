@@ -5,8 +5,12 @@ import math
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
+import imdb
 
 from .watchlist_provider import BaseWatchlistGetter, WatchlistElement, WatchlistError
+
+
+ia = imdb.IMDb()
 
 
 class IMDbWatchlistGetter(BaseWatchlistGetter):
@@ -60,3 +64,11 @@ def get_imdb_id_from_url(url: str) -> str:
 
 def get_watchlist(url: str) -> pd.DataFrame:
     return _get_watchlist(_get_pageId(url))
+
+
+def get_top_250() -> List[WatchlistElement]:
+    top_movies = ia.get_top250_movies()
+
+    res = [WatchlistElement(mov["title"], mov["year"], "tt%s" % mov.getID())
+           for mov in top_movies]
+    return res

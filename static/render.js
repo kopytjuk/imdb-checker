@@ -49,8 +49,8 @@ function renderTable(html_id, data) {
         }
         ],
         data: data["result"],
-        sortName: "num_available",
-        sortOrder: "desc"
+        //sortName: "num_available",
+        //sortOrder: "desc"
       })
 }
 

@@ -12,8 +12,9 @@ from fastapi.templating import Jinja2Templates
 
 from pydantic import BaseModel
 
-from celery_tasks import run_check, get_state_by_id, get_result_by_id
+from celery_tasks import run_imdb_user_watchlist_check, run_imdb_top_250_check, get_state_by_id, get_result_by_id
 from logic.notifier import send_notification
+from logic.datatypes import Results
 
 
 LOG_LEVEL = os.environ.get("LOG_LEVEL", "DEBUG").upper()
@@ -34,19 +35,6 @@ class WatchlistURL(BaseModel):
 
 class TaskInfo(BaseModel):
     task_id: str
-
-
-class ResultElement(BaseModel):
-    name: str
-    year: str
-    availability: dict
-    poster: str
-    description: str
-    num_available: int
-
-class Result(BaseModel):
-    result: List[ResultElement]
-
 
 class Reason(Enum):
     BUG = 1
@@ -87,11 +75,25 @@ async def check_imdb_list(watchlist: WatchlistURL):
     url = watchlist.url
     location_code = watchlist.location_code
 
-    task = run_check.delay(url, location_code)
+    task = run_imdb_user_watchlist_check.delay(url, location_code)
     task_id = task.id
 
     if LOG_LEVEL > logging.DEBUG:
         send_notification("Someone checks %s with task_id=%s" % (url, str(task_id)))
+
+    return {"task_id": task_id}
+
+
+@app.post("/check_imdb_top_250")
+async def check_imdb_top_250(watchlist: WatchlistURL):
+
+    location_code = watchlist.location_code
+
+    task = run_imdb_top_250_check.delay(location_code)
+    task_id = task.id
+
+    if LOG_LEVEL > logging.DEBUG:
+        send_notification("Someone checks IMDB top 250 with task_id=%s" % (str(task_id)))
 
     return {"task_id": task_id}
 
@@ -108,7 +110,7 @@ async def get_state(state: TaskInfo):
     return {"state": state, "message": message}
 
 
-@app.post('/get_result', response_model=Result)
+@app.post('/get_result', response_model=Results)
 async def get_result(state: TaskInfo):
 
     task_id = state.task_id

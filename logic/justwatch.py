@@ -2,6 +2,7 @@ import json
 from urllib.parse import quote_plus
 from typing import List, Union, Optional
 from multiprocessing.pool import ThreadPool
+import time
 
 import pandas as pd
 from pydantic import BaseModel, ValidationError
@@ -153,12 +154,13 @@ def availability(movie_name: str, year: Union[int, None], imdb_id: str, location
 def availability_table(watchlist_elements: List[WatchlistElement], location_code: str,
                        progress_tracker=None) -> pd.DataFrame:
 
-    pool = ThreadPool(4)
+    pool = ThreadPool(1)
 
     def check_avail(movie: str, year: Union[int, None], imdb_id: str):
 
         avail: dict = availability(movie, year, imdb_id, location_code)
         avail["Name"] = movie
+        time.sleep(0.2)
         
         return avail
 

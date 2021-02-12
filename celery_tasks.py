@@ -4,7 +4,7 @@ from multiprocessing import Value
 from celery import Celery
 from celery.states import FAILURE
 
-from logic.watchlist_checker import check
+from logic.worker import check_imdb_user_watchlist, check_top_250_movies
 from logic.config import default_config
 
 broker_url = default_config.CELERY_BROKER_URL
@@ -48,7 +48,7 @@ class ProgressTracker:
 
 
 @app.task(bind=True)
-def run_check(self, url: str, location_code: str) -> dict:
+def run_imdb_user_watchlist_check(self, url: str, location_code: str) -> dict:
 
     pt = ProgressTracker(self)
 
@@ -62,7 +62,25 @@ def run_check(self, url: str, location_code: str) -> dict:
 
     response_dict = {"result": None}
 
-    response_dict["result"] = check(url_to_check, user_location, pt)
+    response_dict["result"] = check_imdb_user_watchlist(url_to_check, user_location, pt)
+
+    pt.info("Finalizing ...")
+
+    return response_dict
+
+
+@app.task(bind=True)
+def run_imdb_top_250_check(self, location_code: str) -> dict:
+
+    pt = ProgressTracker(self)
+
+    pt.info("Starting ...")
+
+    user_location: str = location_code
+
+    response_dict = {"result": None}
+
+    response_dict["result"] = check_top_250_movies(user_location, pt)
 
     pt.info("Finalizing ...")
 

@@ -2,19 +2,22 @@ import pytest
 
 from logic.worker import check_imdb_user_watchlist, check_top_250_movies
 from logic.watchlist_provider import WatchlistError
+from logic.config import default_config
 
 
 WATCHLISTS = [
     "https://www.imdb.com/user/ur58171394/watchlist",
-    #"https://www.imdb.com/user/ur5205364/watchlist",  # large
-    #"https://www.imdb.com/user/ur85031360/watchlist",
+    "https://www.imdb.com/user/ur5205364/watchlist",  # large
+    "https://www.imdb.com/user/ur85031360/watchlist",
 ]
 
 LOCATIONS = [
     "de_DE",
-    #"en_GB",
-    #"en_US"
+    "en_GB",
+    "en_US"
 ]
+
+default_config.request_cooldown_time = 0.2
 
 
 @pytest.mark.parametrize("location_code", LOCATIONS)

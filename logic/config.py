@@ -21,6 +21,9 @@ class AppSettings(BaseSettings):
         env='CELERY_RESULT_URL')
     CELERY_BROKER_POOL_LIMIT: int = Field(10, env='CELERY_BROKER_POOL_LIMIT')
 
+    # Internals
+    request_cooldown_time: float = Field(0.1, env='REQUEST_COOLDOWN_TIME')
+
     class Config:
         env_file = '.env'
         env_file_encoding = 'utf-8'

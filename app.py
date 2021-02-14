@@ -14,7 +14,7 @@ from pydantic import BaseModel
 
 from celery_tasks import run_imdb_user_watchlist_check, run_imdb_top_250_check, get_state_by_id, get_result_by_id
 from logic.notifier import send_notification
-from logic.datatypes import Results
+from logic.datatypes import Results, UserRequest
 
 
 LOG_LEVEL = os.environ.get("LOG_LEVEL", "DEBUG").upper()
@@ -28,10 +28,6 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 
 templates = Jinja2Templates(directory="templates")
 
-
-class WatchlistURL(BaseModel):
-    url: str
-    location_code: str
 
 class TaskInfo(BaseModel):
     task_id: str
@@ -69,31 +65,22 @@ async def contact(request: Request):
     return templates.TemplateResponse("contact.html", {"request": request})
 
 
-@app.post("/check_imdb_list")
-async def check_imdb_list(watchlist: WatchlistURL):
+@app.post("/check")
+async def check_imdb_list(req: UserRequest):
 
-    url = watchlist.url
-    location_code = watchlist.location_code
+    method = req.method
+    location_code = req.location_code
 
-    task = run_imdb_user_watchlist_check.delay(url, location_code)
+    if method == "imdb_watchlist":
+        url = req.url
+        task = run_imdb_user_watchlist_check.delay(url, location_code)
+    elif method == "imdb_top_250":
+        task = run_imdb_top_250_check.delay(location_code)
+
     task_id = task.id
 
     if LOG_LEVEL > logging.DEBUG:
         send_notification("Someone checks %s with task_id=%s" % (url, str(task_id)))
-
-    return {"task_id": task_id}
-
-
-@app.post("/check_imdb_top_250")
-async def check_imdb_top_250(watchlist: WatchlistURL):
-
-    location_code = watchlist.location_code
-
-    task = run_imdb_top_250_check.delay(location_code)
-    task_id = task.id
-
-    if LOG_LEVEL > logging.DEBUG:
-        send_notification("Someone checks IMDB top 250 with task_id=%s" % (str(task_id)))
 
     return {"task_id": task_id}
 

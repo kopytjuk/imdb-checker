@@ -1,9 +1,21 @@
 async function getResults(imdb_url, location_code) {
     console.log("Querying " + imdb_url);
-    const response = await fetch("check_imdb_top_250",
+    const response = await fetch("check",
         {
             method: "POST",
-            body: JSON.stringify({ url: imdb_url, location_code: location_code }),
+            body: JSON.stringify({ url: imdb_url, location_code: location_code, method: "imdb_watchlist"}),
+            headers: { 'Content-Type': 'application/json' }
+        });
+    task = await response.json();
+    return task
+}
+
+async function start_imdb_top_250_check(location_code) {
+    console.log("Querying IMDb Top 250.");
+    const response = await fetch("check",
+        {
+            method: "POST",
+            body: JSON.stringify({location_code: location_code, method: "imdb_top_250"}),
             headers: { 'Content-Type': 'application/json' }
         });
     task = await response.json();
@@ -72,6 +84,16 @@ $("#check_button").bind("click", function () {
     location_code = $("#location_code_selector").val();
 
     getResults(imdb_url, location_code).then(task => doPoll(task.task_id));
+});
+
+
+$("#check_imdb_250").bind("click", function () {
+    fillResultsArea('<div class="lds-facebook"><div></div><div></div><div></div></div><p id="progress_text">Can take a few minutes ...</p>');
+
+    // get location code
+    location_code = $("#location_code_selector").val();
+
+    start_imdb_top_250_check(location_code).then(task => doPoll(task.task_id));
 });
 
 $("#send_message_button").bind("click", async function () {

@@ -1,29 +1,93 @@
 {% extends "index.html" %}
 {% block content %}
-<div>Just paste the link to your <b>public watchlist</b>, select your location and press check!</div>
 <div>
     Supported providers:
     <img src="static/assets/netflix.png" width="30" style="margin: 10px" alt="">
     <img src="static/assets/prime.png" width="30" style="margin: 10px" alt="">
     <img src="static/assets/disney.png" width="30" style="margin: 10px" alt="">
 </div>
-<div class="input-group mb-3 mt-3">
-    <input type="text" class="form-control" value="https://www.imdb.com/list/ls086530738/" placeholder="URL to your IMDb watchlist"
-        aria-label="Link to IMDB watchlist" aria-describedby="check_button" id="url_input">
-    <select class="custom-select col-lg-2" id="location_code_selector" aria-label="Select your location">
-        <option value="de_DE" selected>Germany</option>
-        <option value="en_US">United States</option>
-        <option value="de_AT">Austria</option>
-        <option value="de_CH">Switzerland</option>
-        <option value="en_GB">United Kingdom</option>
-        <option value="fr_FR">France</option>
-        <option value="ru_RU">Russia</option>
-        <option value="en_NL">Netherlands</option>
+
+<!-- Country select area -->
+<div class="mt-3">
+    <h5><span class="badge badge-info">1</span> Select your country</h5>
+    <select class="selectpicker mt-1" id="location_code_selector">
+        <option data-content='<span class="flag-icon flag-icon-de"></span> Germany' value="de_DE" selected></option>
+        <option data-content='<span class="flag-icon flag-icon-us"></span> United States' value="en_US"></option>
+        <option data-content='<span class="flag-icon flag-icon-at"></span> Austria' value="de_AT">Austria</option>
+        <option data-content='<span class="flag-icon flag-icon-ch"></span> Switzerland' value="de_CH">Switzerland
+        </option>
+        <option data-content='<span class="flag-icon flag-icon-gb"></span> United Kingdom' value="en_GB">United
+            Kingdom</option>
+        <option data-content='<span class="flag-icon flag-icon-fr"></span> France' value="fr_FR">France</option>
+        <option data-content='<span class="flag-icon flag-icon-ru"></span> Russia' value="ru_RU">Russia</option>
+        <option data-content='<span class="flag-icon flag-icon-nl"></span> Netherlands' value="en_NL">Netherlands
+        </option>
     </select>
-    <div class="input-group-append">
-        <button class="btn btn-primary" type="button" id="check_button"><b>Check!</b></button>
+</div>
+
+<!-- Explore list area -->
+<div class="mt-4">
+    <h5><span class="badge badge-info">2</span> Explore</h5>
+    <div class="mt-2">
+
+        <button type="button" class="btn btn-primary imdb_style_button" id="check_imdb_250">
+            <span class="badge badge-success">new</span> Top 250
+        </button>
+        <button type="button" class="btn btn-primary imdb_style_button">
+            <span class="badge badge-light">soon</span> Oscar Winners
+        </button>
+
+        <div class="btn-group">
+            <button type="button" class="btn btn-primary imdb_style_button">
+                <span class="badge badge-light">soon</span> Oscars 2020
+            </button>
+            <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split imdb_style_button"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="sr-only">Toggle Dropdown</span>
+            </button>
+            <div class="dropdown-menu">
+                <a class="dropdown-item" href="#">Oscars 2020</a>
+                <a class="dropdown-item" href="#">Oscars 2019</a>
+                <a class="dropdown-item" href="#">Oscars 2018</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#">TBD</a>
+            </div>
+        </div>
+
+        <button class="btn btn-secondary ml-3" type="button" data-toggle="collapse" data-target="#collapseExample"
+            aria-expanded="false" aria-controls="collapseExample">
+            IMDb watchlist
+        </button>
+
+        <a class="ml-3" href="/contact">
+            <button type="button" class="btn btn-light">
+                Ideas? Ask for a list!
+            </button>
+        </a>
+
+
+    </div>
+
+    <div class="collapse mt-3" id="collapseExample">
+        <div class="card card-body">
+
+            <div>Just paste the link to your <b>public watchlist</b>, select your location and press check!
+            </div>
+
+            <div class="input-group mb-3 mt-3">
+                <input type="text" class="form-control" value="https://www.imdb.com/list/ls086530738/"
+                    placeholder="URL to your IMDb watchlist" aria-label="Link to IMDB watchlist"
+                    aria-describedby="check_button" id="url_input">
+                <div class="input-group-append">
+                    <button class="btn btn-primary" type="button" id="check_button"><b>Check!</b></button>
+                </div>
+            </div>
+
+        </div>
     </div>
 </div>
-<div class="container mt-3" id="result_area">
+
+<div class="container mt-4" id="result_area">
+    <!-- Content here -->
 </div>
 {% endblock %}

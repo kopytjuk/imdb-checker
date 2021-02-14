@@ -9,7 +9,7 @@ from pydantic import BaseModel, ValidationError
 
 from .watchlist_provider import WatchlistElement
 from .web_utils import retry_session
-from .config import memory
+from .config import memory, default_config
 
 STREAM_PROVIDERS = {
     "Amazon": 9,
@@ -154,13 +154,15 @@ def availability(movie_name: str, year: Union[int, None], imdb_id: str, location
 def availability_table(watchlist_elements: List[WatchlistElement], location_code: str,
                        progress_tracker=None) -> pd.DataFrame:
 
-    pool = ThreadPool(1)
+    print("Uses default_config.request_cooldown_time = %f" % default_config.request_cooldown_time)
+
+    pool = ThreadPool(4)
 
     def check_avail(movie: str, year: Union[int, None], imdb_id: str):
 
         avail: dict = availability(movie, year, imdb_id, location_code)
         avail["Name"] = movie
-        time.sleep(0.2)
+        time.sleep(default_config.request_cooldown_time)
         
         return avail
 

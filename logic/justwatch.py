@@ -7,7 +7,7 @@ import time
 import pandas as pd
 from pydantic import BaseModel, ValidationError
 
-from .watchlist_provider import WatchlistElement
+from .datatypes import MediaElement
 from .web_utils import retry_session
 from .config import memory, default_config
 
@@ -157,7 +157,7 @@ def availability(movie_name: str, year: Union[int, None], imdb_id: str, location
         return result
 
 
-def availability_table(watchlist_elements: List[WatchlistElement], location_code: str,
+def availability_table(watchlist_elements: List[MediaElement], location_code: str,
                        progress_tracker=None) -> pd.DataFrame:
 
     print("Uses default_config.request_cooldown_time = %f" % default_config.request_cooldown_time)

@@ -1,20 +1,22 @@
-"""Functions to check the availability of a list of elements"""
+"""Functions to check the availability of a list of MediaElements"""
 from typing import List, Union
 
 from .datatypes import MediaElement, ResultElement
 from .justwatch import availability_table, STREAM_PROVIDERS_NAMES
-from .omdb import get_media_info, MediaInfo
+from .omdb import get_media_info
 from .config import SUPPORTED_LOCATION_CODES
 
 
-def check_availability(elements: List[MediaElement], location_code: str, progress_tracker=None) -> List[ResultElement]:
+def check_availability(elements: List[MediaElement], location_code: str, progress_tracker=None)\
+        -> List[ResultElement]:
 
     validate_location_code(location_code)
 
     N = len(elements)
 
     if progress_tracker:
-        progress_tracker.info("Found %d elements. Checking takes up to %d seconds." % (N, int(N*0.2)))
+        progress_tracker.info(
+            "Found %d elements. Checking takes up to %d seconds." % (N, int(N*0.2)))
 
     avail_df = availability_table(elements, location_code, progress_tracker)
 
@@ -34,7 +36,8 @@ def check_availability(elements: List[MediaElement], location_code: str, progres
     return result
 
 
-def finalize_result(name: str, year: Union[int, None], availability: dict, movie_info: dict) -> ResultElement:
+def finalize_result(name: str, year: Union[int, None], availability: dict, movie_info: dict)\
+        -> ResultElement:
 
     result = {
         "name": name,

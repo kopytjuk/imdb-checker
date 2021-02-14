@@ -3,6 +3,7 @@ from urllib3.util.retry import Retry
 import requests
 from requests.adapters import HTTPAdapter
 
+
 def retry_session(retries, session=None, backoff_factor=0.3):
     session = session or requests.Session()
     retry = Retry(

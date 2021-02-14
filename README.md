@@ -1,4 +1,4 @@
-# IMDB Stream Checker
+# IMDb Stream Checker
 
 Try it out: [https://imdb-checker.herokuapp.com/](https://imdb-checker.herokuapp.com/)
 

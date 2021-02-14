@@ -1,3 +1,5 @@
+"""Dataclasses used across the backend."""
+
 from typing import List, Optional
 from enum import Enum
 from dataclasses import dataclass
@@ -25,7 +27,6 @@ class UserMessage(BaseModel):
 
 
 class UserRequest(BaseModel):
-
     method: str
     location_code: str
     url: Optional[str]
@@ -33,6 +34,8 @@ class UserRequest(BaseModel):
 
 @dataclass
 class MediaElement:
+    """Single unit of a movie/series. Usually an element in a list, e.g. "Top 250"
+    """
     name: str
     year: int
     imdb_id: str

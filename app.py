@@ -17,7 +17,6 @@ LOG_LEVEL = getattr(logging, LOG_LEVEL)
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=LOG_LEVEL)
 
-
 app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
@@ -60,7 +59,8 @@ async def check_imdb_list(req: UserRequest):
     task_id = task.id
 
     if LOG_LEVEL > logging.DEBUG:
-        send_notification("Someone checks %s with task_id=%s" % (url, str(task_id)))
+        send_notification("Someone checks %s (%s) with task_id=%s"
+                          % (url, location_code, str(task_id)))
 
     return {"task_id": task_id}
 
@@ -82,7 +82,8 @@ async def get_result(state: TaskInfo):
 
     task_id = state.task_id
 
-    res = get_result_by_id(task_id)
+    res: Results = get_result_by_id(task_id)
+
     if LOG_LEVEL > logging.DEBUG:
         send_notification(
             "Successfully provided result of task_id='%s'" % task_id)

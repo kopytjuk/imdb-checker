@@ -1,11 +1,12 @@
 import time
 from multiprocessing import Value
+from typing import Tuple, List
 
 from celery import Celery
-from celery.states import FAILURE
 
-from logic.worker import check_imdb_user_watchlist, check_top_250_movies
+from logic.main import check_imdb_user_watchlist, check_imdb_top_250_movies
 from logic.config import default_config
+from logic.datatypes import ResultElement
 
 broker_url = default_config.CELERY_BROKER_URL
 result_url = default_config.CELERY_RESULT_URL
@@ -19,32 +20,32 @@ app.conf.update(broker_pool_limit=int(broker_pool_limit))
 
 class ProgressTracker:
 
-        def __init__(self, task):
-            self._task = task
-            self._progress = None
-            self._total = None
-            self._message = ""
+    def __init__(self, task):
+        self._task = task
+        self._progress = None
+        self._total = None
+        self._message = ""
 
-        def start_work(self, message: str, total: int):
-            self._progress = Value('i', 0)
-            self._message = message
-            self._total = total
-            self.update()
-        
-        def info(self, message: str):
-            self._message = message
-            self._total = None
-            self.update()
+    def start_work(self, message: str, total: int):
+        self._progress = Value('i', 0)
+        self._message = message
+        self._total = total
+        self.update()
 
-        def progress(self, i: int):
-            self._progress.value += i
-            self.update()
+    def info(self, message: str):
+        self._message = message
+        self._total = None
+        self.update()
 
-        def update(self):
-            message = self._message
-            if self._total:
-                message = "%s %d/%d" % (self._message, self._progress.value, self._total)
-            self._task.update_state(state="PROGRESS", meta={"message": message})
+    def progress(self, i: int):
+        self._progress.value += i
+        self.update()
+
+    def update(self):
+        message = self._message
+        if self._total:
+            message = "%s %d/%d" % (self._message, self._progress.value, self._total)
+        self._task.update_state(state="PROGRESS", meta={"message": message})
 
 
 @app.task(bind=True)
@@ -54,15 +55,11 @@ def run_imdb_user_watchlist_check(self, url: str, location_code: str) -> dict:
 
     pt.info("Starting ...")
 
-    url_to_check: str = url
-
-    user_location: str = location_code
-
-    url_to_check = url_to_check.strip()
+    url = url.strip()
 
     response_dict = {"result": None}
 
-    response_dict["result"] = check_imdb_user_watchlist(url_to_check, user_location, pt)
+    response_dict["result"] = check_imdb_user_watchlist(url, location_code, pt)
 
     pt.info("Finalizing ...")
 
@@ -76,25 +73,25 @@ def run_imdb_top_250_check(self, location_code: str) -> dict:
 
     pt.info("Starting ...")
 
-    user_location: str = location_code
-
     response_dict = {"result": None}
 
-    response_dict["result"] = check_top_250_movies(user_location, pt)
+    response_dict["result"] = check_imdb_top_250_movies(location_code, pt)
 
     pt.info("Finalizing ...")
 
     return response_dict
 
 
-@app.task
-def wait(seconds: int):
-    time.sleep(seconds)
+def get_state_by_id(id: str) -> Tuple[str, str]:
+    """Return current task state by id.
 
-    return "Waited for %d seconds!" % int(seconds)
+    Args:
+        id (str): task id
 
+    Returns:
+        Tuple[str, str]: state and message
+    """
 
-def get_state_by_id(id: str) -> bool:
     job = app.AsyncResult(id)
     state = job.state
 
@@ -108,7 +105,14 @@ def get_state_by_id(id: str) -> bool:
     return state, message
 
 
-def get_result_by_id(id: str) -> dict:
+def get_result_by_id(id: str) -> List[ResultElement]:
     result = app.AsyncResult(id)
     print("Trying to get results from '%s'" % id)
     return result.get(timeout=10)
+
+
+# small example for Celery
+@app.task
+def wait(seconds: int):
+    time.sleep(seconds)
+    return "Waited for %d seconds!" % int(seconds)

@@ -1,3 +1,6 @@
+"""Configurate the behaviour of the app.
+"""
+
 from joblib import Memory
 from pydantic import (
     BaseSettings,

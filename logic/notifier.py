@@ -1,5 +1,3 @@
-import os
-
 from notifiers import get_notifier
 from .config import default_config
 

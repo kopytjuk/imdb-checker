@@ -91,7 +91,7 @@ async def get_result(state: TaskInfo):
     return {"result": res["result"]}
 
 
-@app.post('/send_message')
+@app.post('/send_feedback_message')
 async def message(message: UserMessage):
 
     message_str = "Name: {name:s}\nE-Mail: {email:s}\nReason: {reason:s}\n" \

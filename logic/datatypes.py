@@ -19,6 +19,8 @@ class Reason(Enum):
 
 
 class UserMessage(BaseModel):
+    """Feedback message from /send_feedback_message GET
+    """
     timestamp: datetime.datetime
     name: str
     email: str
@@ -27,7 +29,9 @@ class UserMessage(BaseModel):
 
 
 class UserRequest(BaseModel):
-    method: str
+    """Is received from the client. Start a celery job based on the method.
+    """
+    method: str  # one of "imdb_watchlist", "imdb_top_250"
     location_code: str
     url: Optional[str]
 
@@ -43,6 +47,8 @@ class MediaElement:
 
 @dataclass
 class ResultElement:
+    """This object is returned by availability checker to the frontend.
+    """
     name: str
     year: str
     availability: dict
@@ -51,6 +57,7 @@ class ResultElement:
     num_available: int
 
 
-# is returned to the frontend as json object
 class Results(BaseModel):
+    """This object is returned by availability checker to the frontend.
+    """
     result: List[ResultElement]

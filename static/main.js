@@ -96,7 +96,7 @@ $("#check_imdb_250").bind("click", function () {
     start_imdb_top_250_check(location_code).then(task => doPoll(task.task_id));
 });
 
-$("#send_message_button").bind("click", async function () {
+$("#send_feedback_message_button").bind("click", async function () {
 
     // get watchlist URL
     name = $("#contactName").val();
@@ -117,7 +117,7 @@ $("#send_message_button").bind("click", async function () {
         "timestamp": new Date().toISOString()
     };
 
-    const response = await fetch("send_message",
+    const response = await fetch("send_feedback_message",
         {
             method: "POST",
             body: JSON.stringify(message),
@@ -127,5 +127,5 @@ $("#send_message_button").bind("click", async function () {
 
     alert("❤️ Thanks!");
     
-    $("#send_message_button").prop("disabled", true);
+    $("#send_feedback_message_button").prop("disabled", true);
 });

@@ -11,6 +11,9 @@ from .watchlist_provider import WatchlistElement
 from .web_utils import retry_session
 from .config import memory, default_config
 
+
+session = retry_session(3)
+
 STREAM_PROVIDERS = {
     "Amazon": 9,
     "Netflix": 8,
@@ -20,14 +23,18 @@ STREAM_PROVIDERS = {
 STREAM_PROVIDERS_NAMES = list(STREAM_PROVIDERS.keys())
 
 STREAM_PROVIDERS_INV = {v: k for k, v in STREAM_PROVIDERS.items()}
+
+
 class Offer(BaseModel):
     monetization_type: str
     provider_id: int
     urls: dict
 
+
 class ExternalId(BaseModel):
     provider: str
     external_id: str
+
 
 class MediaEntity(BaseModel):
     jw_entity_id: str
@@ -50,11 +57,10 @@ def is_same_imdb_id(entity: MediaEntity, imdb_id: str) -> False:
             return ext.external_id == imdb_id
     return False
 
-session = retry_session(3)
-
 
 @memory.cache()
-def get_movie_id(movie_name: str, year: Union[int, None], location: str = "de_DE") -> Union[str, None]:
+def get_movie_id(movie_name: str, year: Union[int, None], location: str = "de_DE") \
+        -> Union[str, None]:
 
     search_url_base = "https://apis.justwatch.com/content/titles/{:s}/popular?body={:s}"
 
@@ -81,7 +87,7 @@ def get_movie_id(movie_name: str, year: Union[int, None], location: str = "de_DE
     except json.decoder.JSONDecodeError:
         return None
 
-    if not "items" in resp_json:
+    if "items" not in resp_json:
         return None
 
     suggested_items = resp_json["items"]
@@ -163,7 +169,7 @@ def availability_table(watchlist_elements: List[WatchlistElement], location_code
         avail: dict = availability(movie, year, imdb_id, location_code)
         avail["Name"] = movie
         time.sleep(default_config.request_cooldown_time)
-        
+
         return avail
 
     avail_list = pool.starmap(
@@ -191,7 +197,7 @@ def get_entity_by_id(movie_id: str, location_code: str) -> Union[MediaEntity, No
     response_dict = response.json()
     try:
         entity = MediaEntity(**response_dict)
-    except ValidationError as ex:
+    except ValidationError:
         return None
 
     return entity

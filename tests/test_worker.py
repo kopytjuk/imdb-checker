@@ -1,7 +1,6 @@
 import pytest
 
 from logic.worker import check_imdb_user_watchlist, check_top_250_movies
-from logic.watchlist_provider import WatchlistError
 from logic.config import default_config
 
 

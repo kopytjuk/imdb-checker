@@ -1,9 +1,27 @@
-from typing import Dict, List, Optional
+from typing import List, Optional
+from enum import Enum
 from dataclasses import dataclass
+import datetime
 
 from pydantic import BaseModel
 
-from .config import SUPPORTED_LOCATION_CODES
+
+class TaskInfo(BaseModel):
+    task_id: str
+
+
+class Reason(Enum):
+    BUG = 1
+    FEATURE = 2
+    OTHER = 3
+
+
+class UserMessage(BaseModel):
+    timestamp: datetime.datetime
+    name: str
+    email: str
+    reason: Reason
+    message: str
 
 
 class UserRequest(BaseModel):
@@ -33,4 +51,3 @@ class ResultElement:
 # is returned to the frontend as json object
 class Results(BaseModel):
     result: List[ResultElement]
-

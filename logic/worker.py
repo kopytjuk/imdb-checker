@@ -1,10 +1,9 @@
-"""Main entry point for each celery worker (process). Each function outputs a list of 
+"""Main entry point for each celery worker (process). Each function outputs a list of
 datatypes.Results object
 """
 
 from .datatypes import Results
 from .imdb_provider import get_top_250, IMDbWatchlistGetter
-from .justwatch import availability_table
 from .availability import check_availability
 
 

@@ -1,5 +1,3 @@
-import os
-
 from joblib import Memory
 from pydantic import (
     BaseSettings,
@@ -18,7 +16,7 @@ class AppSettings(BaseSettings):
     # Celery
     CELERY_BROKER_URL: str = Field('amqp://localhost', env='CELERY_BROKER_URL')
     CELERY_RESULT_URL: str = Field('db+sqlite:///results.sqlite',
-        env='CELERY_RESULT_URL')
+                                   env='CELERY_RESULT_URL')
     CELERY_BROKER_POOL_LIMIT: int = Field(10, env='CELERY_BROKER_POOL_LIMIT')
 
     # Internals

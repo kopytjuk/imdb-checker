@@ -2,3 +2,6 @@
 
 .env
 .cache
+
+# local result DB
+results.sqlite

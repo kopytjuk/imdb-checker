@@ -76,6 +76,7 @@ async def check_imdb_list(req: UserRequest):
         task = run_imdb_user_watchlist_check.delay(url, location_code)
     elif method == "imdb_top_250":
         task = run_imdb_top_250_check.delay(location_code)
+        url = "https://www.imdb.com/chart/top/"  # only for print message
 
     task_id = task.id
 

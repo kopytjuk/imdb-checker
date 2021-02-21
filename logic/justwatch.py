@@ -162,7 +162,7 @@ def availability_table(watchlist_elements: List[MediaElement], location_code: st
 
     print("Uses default_config.request_cooldown_time = %f" % default_config.request_cooldown_time)
 
-    pool = ThreadPool(4)
+    pool = ThreadPool(default_config.number_threads)
 
     def check_avail(movie: str, year: Union[int, None], imdb_id: str):
 

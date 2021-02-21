@@ -23,7 +23,8 @@ class AppSettings(BaseSettings):
     CELERY_BROKER_POOL_LIMIT: int = Field(10, env='CELERY_BROKER_POOL_LIMIT')
 
     # Internals
-    request_cooldown_time: float = Field(0.1, env='REQUEST_COOLDOWN_TIME')
+    request_cooldown_time: float = Field(0.3, env='REQUEST_COOLDOWN_TIME')
+    number_threads: int = Field(2, env='NUMBER_THREADS')
 
     class Config:
         env_file = '.env'

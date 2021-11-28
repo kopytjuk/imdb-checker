@@ -6,7 +6,7 @@ from dataclasses import dataclass
 import datetime
 
 from pydantic import BaseModel
-
+import pandas as pd
 
 class TaskInfo(BaseModel):
     task_id: str
@@ -31,9 +31,9 @@ class UserMessage(BaseModel):
 class UserRequest(BaseModel):
     """Is received from the client. Start a celery job based on the method.
     """
-    method: str  # one of "imdb_watchlist", "imdb_top_250"
+    method: str  # one of "_imdb_watchlist", "imdb_top_250", "oscars_2021"
     location_code: str
-    url: Optional[str]
+    url: Optional[str]  # only used for '_imdb_watchlist'
 
 
 @dataclass
@@ -61,3 +61,21 @@ class Results(BaseModel):
     """This object is returned by availability checker to the frontend.
     """
     result: List[ResultElement]
+
+
+@dataclass
+class MediaList:
+
+    name: str
+    elements: List[MediaElement]
+
+    @classmethod
+    def from_csv(cls, name: str, path: str) -> "MediaList":
+
+        df = pd.read_csv(path)
+
+        elements = list()
+        for _, row in df.iterrows():
+            elements.append(MediaElement(row["name"], row["year"], row["imdb_id"]))
+
+        return MediaList(name, elements)

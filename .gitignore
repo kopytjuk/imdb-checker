@@ -1,6 +1,7 @@
 **.pytest_cache**
 
 .env
+.env.bat
 .cache
 
 # local result DB

@@ -55,7 +55,7 @@ choco install rabbitmq
 Set environment variables (if not set):
 
 ```
-source .env
+source .env OR call .env.bat
 ```
 
 Start celery worker:

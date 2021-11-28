@@ -1,16 +1,18 @@
 """Functions to check the availability of a list of MediaElements"""
 from typing import List, Union
 
-from .datatypes import MediaElement, ResultElement
+from .datatypes import MediaElement, ResultElement, MediaList
 from .justwatch import availability_table, STREAM_PROVIDERS_NAMES
 from .omdb import get_media_info
 from .config import SUPPORTED_LOCATION_CODES
 
 
-def check_availability(elements: List[MediaElement], location_code: str, progress_tracker=None)\
+def check_availability(medialist: MediaList, location_code: str, progress_tracker=None)\
         -> List[ResultElement]:
 
     validate_location_code(location_code)
+
+    elements = medialist.elements
 
     N = len(elements)
 

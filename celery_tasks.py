@@ -73,9 +73,25 @@ def run_imdb_top_250_check(self, location_code: str) -> dict:
 
     pt.info("Starting ...")
 
-    response_dict = {"result": None}
+    response_dict = {"result": []}
 
     response_dict["result"] = check_imdb_top_250_movies(location_code, pt)
+
+    pt.info("Finalizing ...")
+
+    return response_dict
+
+
+@app.task(bind=True)
+def check_medialist(self, name: str, location_code: str) -> dict:
+
+    # medialist = get_list
+
+    pt = ProgressTracker(self)
+
+    pt.info("Starting ...")
+
+    response_dict = {"result": []}
 
     pt.info("Finalizing ...")
 

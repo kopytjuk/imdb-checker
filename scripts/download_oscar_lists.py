@@ -1,3 +1,5 @@
+# res = response.css('script::text').re(r".*IMDbReactWidgets.NomineesWidget.push\(.+(\{\"nomineesWidgetModel\".*\}).+\);")
+
 import scrapy
 from scrapy.linkextractors import LinkExtractor
 

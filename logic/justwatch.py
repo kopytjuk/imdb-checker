@@ -25,6 +25,7 @@ STREAM_PROVIDERS_NAMES = list(STREAM_PROVIDERS.keys())
 STREAM_PROVIDERS_INV = {v: k for k, v in STREAM_PROVIDERS.items()}
 
 
+# BaseModel classes for easy parsing of JSON responses
 class Offer(BaseModel):
     monetization_type: str
     provider_id: int

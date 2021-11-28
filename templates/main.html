@@ -30,7 +30,7 @@
     <h5><span class="badge badge-info">2</span> Explore</h5>
     <div class="mt-2">
 
-        <button type="button" class="btn btn-primary imdb_style_button" id="check_imdb_250">
+        <button type="button" class="btn btn-primary imdb_style_button medialist_trigger" id="check_imdb_250">
             <span class="badge badge-success">new</span> Top 250
         </button>
         <button type="button" class="btn btn-primary imdb_style_button">
@@ -46,9 +46,10 @@
                 <span class="sr-only">Toggle Dropdown</span>
             </button>
             <div class="dropdown-menu">
-                <a class="dropdown-item" href="#">Oscars 2020</a>
-                <a class="dropdown-item" href="#">Oscars 2019</a>
-                <a class="dropdown-item" href="#">Oscars 2018</a>
+                <a class="dropdown-item medialist_trigger" id="oscars_2020" href="#">Oscars 2020</a>
+                <a class="dropdown-item medialist_trigger" id="check_imdb_250" href="#">Oscars 2019</a>
+                <a class="dropdown-item medialist_trigger" href="#">Oscars 2018</a>
+                <a class="dropdown-item medialist_trigger" id="test_medialist" href="#">Test Medialist</a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="#">TBD</a>
             </div>

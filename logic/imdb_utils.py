@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup
 import pandas as pd
 import imdb
 
-from .datatypes import MediaElement
+from .datatypes import MediaElement, MediaList
 
 
 class WatchlistError(Exception):
@@ -20,7 +20,7 @@ class WatchlistError(Exception):
 ia = imdb.IMDb()
 
 
-def get_media_from_watchlist_url(url: str) -> List[MediaElement]:
+def get_media_from_watchlist_url(url: str) -> MediaList:
 
     try:
         df = _get_watchlist(_get_pageId(url))
@@ -35,7 +35,9 @@ def get_media_from_watchlist_url(url: str) -> List[MediaElement]:
             year = int(element["Year"])
         watchlist_elements.append(MediaElement(element["Title"], year, element["Const"]))
 
-    return watchlist_elements
+    media_list = MediaList("userlist", watchlist_elements)
+
+    return media_list
 
 
 def _get_pageId(url: str) -> str:
@@ -71,9 +73,9 @@ def get_watchlist(url: str) -> pd.DataFrame:
     return _get_watchlist(_get_pageId(url))
 
 
-def get_top_250() -> List[MediaElement]:
+def get_top_250() -> MediaList:
     top_movies = ia.get_top250_movies()
 
-    res = [MediaElement(mov["title"], mov["year"], "tt%s" % mov.getID())
+    elems = [MediaElement(mov["title"], mov["year"], "tt%s" % mov.getID())
            for mov in top_movies]
-    return res
+    return MediaList("IMDb Top 250", elems)

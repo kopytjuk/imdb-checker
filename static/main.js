@@ -3,7 +3,7 @@ async function getResults(imdb_url, location_code) {
     const response = await fetch("check",
         {
             method: "POST",
-            body: JSON.stringify({ url: imdb_url, location_code: location_code, method: "imdb_watchlist"}),
+            body: JSON.stringify({ url: imdb_url, location_code: location_code, method: "_imdb_watchlist"}),
             headers: { 'Content-Type': 'application/json' }
         });
     task = await response.json();
@@ -16,6 +16,19 @@ async function start_imdb_top_250_check(location_code) {
         {
             method: "POST",
             body: JSON.stringify({location_code: location_code, method: "imdb_top_250"}),
+            headers: { 'Content-Type': 'application/json' }
+        });
+    task = await response.json();
+    return task
+}
+
+
+async function check_medialist(button_id, location_code) {
+    console.log("Querying medialist '" + button_id + "'" );
+    const response = await fetch("check",
+        {
+            method: "POST",
+            body: JSON.stringify({location_code: location_code, method: button_id}),
             headers: { 'Content-Type': 'application/json' }
         });
     task = await response.json();
@@ -94,6 +107,17 @@ $("#check_imdb_250").bind("click", function () {
     location_code = $("#location_code_selector").val();
 
     start_imdb_top_250_check(location_code).then(task => doPoll(task.task_id));
+});
+
+
+// Main function for different kind of lists
+$('.medialist_trigger').bind("click", function (event) {
+
+    button_id = event.target.id // equals media list ID
+
+    location_code = $("#location_code_selector").val();
+
+    check_medialist(button_id, location_code).then(task => doPoll(task.task_id));
 });
 
 $("#send_feedback_message_button").bind("click", async function () {

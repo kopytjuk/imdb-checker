@@ -24,7 +24,7 @@ def check_imdb_user_watchlist(watchlist_url: str, location_code: str,
 
 def check_medialist(name: str, location_code: str, progress_tracker=None) -> List[ResultElement]:
 
-    medialist_path = pathlib.Path(".\medialists") / ("%s.csv" % name)
+    medialist_path = pathlib.Path("./medialists") / ("%s.csv" % name)
 
     medialist = MediaList.from_csv(name, str(medialist_path))
     res = check_availability(medialist, location_code, progress_tracker)

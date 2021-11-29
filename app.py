@@ -58,8 +58,12 @@ async def check(req: UserRequest):
     task_id = task.id
 
     if LOG_LEVEL > logging.DEBUG:
-        send_notification("Someone checks %s (%s) with task_id=%s"
-                          % (url, location_code, str(task_id)))
+        if method == "_imdb_watchlist":
+            send_notification("Someone checks %s (%s) with task_id=%s"
+                              % (url, location_code, str(task_id)))
+        else:
+            send_notification("Someone checks list '%s' (%s) with task_id=%s"
+                              % (method, location_code, str(task_id)))
 
     return {"task_id": task_id}
 

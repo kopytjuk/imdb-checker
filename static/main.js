@@ -86,9 +86,12 @@ function fillResultsArea(html_content) {
     $("#result_area").html(html_content);
 }
 
-$("#check_button").bind("click", function () {
+function showLoading() {
     fillResultsArea('<div class="lds-facebook"><div></div><div></div><div></div></div><p id="progress_text">Can take a few minutes ...</p>');
+}
 
+$("#check_button").bind("click", function () {
+    
     // get watchlist URL
     imdb_url = $("#url_input").val();
     imdb_url = imdb_url.trim()
@@ -96,17 +99,10 @@ $("#check_button").bind("click", function () {
     // get location code
     location_code = $("#location_code_selector").val();
 
+    showLoading();
     getResults(imdb_url, location_code).then(task => doPoll(task.task_id));
-});
 
-
-$("#check_imdb_250").bind("click", function () {
-    fillResultsArea('<div class="lds-facebook"><div></div><div></div><div></div></div><p id="progress_text">Can take a few minutes ...</p>');
-
-    // get location code
-    location_code = $("#location_code_selector").val();
-
-    start_imdb_top_250_check(location_code).then(task => doPoll(task.task_id));
+    
 });
 
 
@@ -116,8 +112,10 @@ $('.medialist_trigger').bind("click", function (event) {
     button_id = event.target.id // equals media list ID
 
     location_code = $("#location_code_selector").val();
-
+    showLoading();
     check_medialist(button_id, location_code).then(task => doPoll(task.task_id));
+
+    
 });
 
 $("#send_feedback_message_button").bind("click", async function () {

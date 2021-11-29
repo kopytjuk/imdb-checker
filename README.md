@@ -58,10 +58,10 @@ Set environment variables (if not set):
 source .env OR call .env.bat
 ```
 
-Start celery worker:
+Start celery worker (with `--pool=solo` on Windows):
 
 ```
-celery -A celery_tasks worker --loglevel=INFO
+celery -A celery_tasks worker --loglevel=INFO --pool=solo
 ```
 
 Start server in a new terminal:
@@ -72,7 +72,7 @@ uvicorn app:app --reload
 
 ## Unittests
 
-In order to run unittests for availability logic:
+In order to run unittests for app's logic:
 
 ```
 pytest .\tests\

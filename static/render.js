@@ -1,4 +1,4 @@
-function renderTable(html_id, data) {
+function renderTable(html_id, data, order_num_avail = false) {
     $("#" + html_id).html('<table id="resultTable"></table>');
 
     $('#resultTable').bootstrapTable({
@@ -28,18 +28,21 @@ function renderTable(html_id, data) {
             field: 'availability.Netflix',
             title: 'Netflix',
             sortable: true,
+            sorter: customSorter,
             formatter: netflixImage
         },
         {
             field: 'availability.Amazon',
             title: 'Amazon',
             sortable: true,
+            sorter: customSorter,
             formatter: amazonImage
         },
         {
             field: 'availability.Disney+',
             title: 'Disney+',
             sortable: true,
+            sorter: customSorter,
             formatter: disneyImage
         },
         {
@@ -49,6 +52,7 @@ function renderTable(html_id, data) {
         }
         ],
         data: data["result"],
+        ...(order_num_avail) && {sortName: "num_available", sortOrder: "desc"},
         //sortName: "num_available",
         //sortOrder: "desc"
       })
@@ -72,4 +76,9 @@ function amazonImage(value) {
 
 function disneyImage(value) {
     return `${value ? '<img src="static/assets/disney.png" width="30" alt="">' : '<img src="static/assets/disney.png" width="30" style="opacity:0.1" alt="">'}`
+}
+
+function customSorter(fieldA, fieldB){
+    // reverts the sort order, s.t. the order is descending
+    return fieldB - fieldA
 }

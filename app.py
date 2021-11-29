@@ -6,8 +6,8 @@ from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
-from celery_tasks import run_imdb_user_watchlist_check, run_imdb_top_250_check, get_state_by_id,\
-    get_result_by_id, check_medialist
+from celery_tasks import run_imdb_user_watchlist_check, check_medialist_task, get_state_by_id,\
+    get_result_by_id
 from logic.notifier import send_notification
 from logic.datatypes import Results, UserRequest, TaskInfo, UserMessage
 
@@ -52,13 +52,8 @@ async def check(req: UserRequest):
     if method == "_imdb_watchlist":
         url = req.url
         task = run_imdb_user_watchlist_check.delay(url, location_code)
-    elif method == "imdb_top_250":
-        task = run_imdb_top_250_check.delay(location_code)
-        url = "https://www.imdb.com/chart/top/"  # only for print message
     else:
-        task = check_medialist.delay(method, location_code)
-
-        #raise ValueError()
+        task = check_medialist_task.delay(method, location_code)
 
     task_id = task.id
 

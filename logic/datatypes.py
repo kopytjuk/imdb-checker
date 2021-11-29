@@ -2,7 +2,7 @@
 
 from typing import List, Optional
 from enum import Enum
-from dataclasses import dataclass
+from dataclasses import dataclass, asdict
 import datetime
 
 from pydantic import BaseModel
@@ -68,6 +68,20 @@ class MediaList:
 
     name: str
     elements: List[MediaElement]
+
+    def __len__(self) -> int:
+        return len(self.elements)
+
+    def to_csv(self, path: str):
+        df = self.to_dataframe()
+        df.to_csv(path, index=False)
+
+    def to_dataframe(self) -> pd.DataFrame:
+        records = list()
+        for elem in self.elements:
+            records.append(asdict(elem))
+        df = pd.DataFrame(records)
+        return df
 
     @classmethod
     def from_csv(cls, name: str, path: str) -> "MediaList":

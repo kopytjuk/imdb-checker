@@ -4,7 +4,7 @@ from typing import Tuple, List
 
 from celery import Celery
 
-from logic.main import check_imdb_user_watchlist, check_imdb_top_250_movies
+from logic.main import check_imdb_user_watchlist, check_medialist
 from logic.config import default_config
 from logic.datatypes import ResultElement
 
@@ -67,7 +67,7 @@ def run_imdb_user_watchlist_check(self, url: str, location_code: str) -> dict:
 
 
 @app.task(bind=True)
-def run_imdb_top_250_check(self, location_code: str) -> dict:
+def check_medialist_task(self, name: str, location_code: str) -> dict:
 
     pt = ProgressTracker(self)
 
@@ -75,23 +75,7 @@ def run_imdb_top_250_check(self, location_code: str) -> dict:
 
     response_dict = {"result": []}
 
-    response_dict["result"] = check_imdb_top_250_movies(location_code, pt)
-
-    pt.info("Finalizing ...")
-
-    return response_dict
-
-
-@app.task(bind=True)
-def check_medialist(self, name: str, location_code: str) -> dict:
-
-    # medialist = get_list
-
-    pt = ProgressTracker(self)
-
-    pt.info("Starting ...")
-
-    response_dict = {"result": []}
+    response_dict["result"] = check_medialist(name, location_code, pt)
 
     pt.info("Finalizing ...")
 

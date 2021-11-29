@@ -2,9 +2,10 @@
 datatypes.Results object
 """
 from typing import List
+import pathlib
 
 from .datatypes import ResultElement, MediaList
-from .imdb_utils import get_top_250, get_media_from_watchlist_url
+from .imdb_utils import get_media_from_watchlist_url
 from .availability import check_availability
 
 
@@ -21,9 +22,10 @@ def check_imdb_user_watchlist(watchlist_url: str, location_code: str,
     return res
 
 
-def check_imdb_top_250_movies(location_code: str, progress_tracker=None) -> List[ResultElement]:
+def check_medialist(name: str, location_code: str, progress_tracker=None) -> List[ResultElement]:
 
-    medialist = get_top_250()
+    medialist_path = pathlib.Path(".\medialists") / ("%s.csv" % name)
 
+    medialist = MediaList.from_csv(name, str(medialist_path))
     res = check_availability(medialist, location_code, progress_tracker)
     return res

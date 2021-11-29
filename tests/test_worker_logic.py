@@ -1,6 +1,6 @@
 import pytest
 
-from logic.main import check_imdb_user_watchlist, check_imdb_top_250_movies
+from logic.main import check_imdb_user_watchlist, check_medialist
 from logic.config import default_config
 
 
@@ -31,6 +31,6 @@ def test_imdb_user_watchlist(url: str, location_code: str):
 @pytest.mark.parametrize("location_code", LOCATIONS)
 def test_imdb_top_250_movies(location_code: str):
 
-    results = check_imdb_top_250_movies(location_code)
+    results = check_medialist("imdb_top_250", location_code)
     assert len(results) > 200
     assert len(results) == 250

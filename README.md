@@ -1,8 +1,13 @@
 # IMDb Stream Checker
 
-Try it out: [https://imdb-checker.herokuapp.com/](https://imdb-checker.herokuapp.com/)
+
 
 Given an IMDB list check availability on Netflix, Amazon Prime & Co.
+
+~~Try it out: [https://imdb-checker.herokuapp.com/](https://imdb-checker.herokuapp.com/)~~ 
+
+Feel free to host it on your own Heroku instance, see [here](#heroku).
+
 
 ![screenshot](assets/screenshot-small.png)
 
@@ -24,7 +29,7 @@ The logic (which runs in Celery worker) queries [JustWatch](https://www.justwatc
 
 ### Heroku
 
-See [Procfile](Procfile) for running the server on Heroku.
+See [Procfile](Procfile) for running the server on a free Heroku instance. Also refer to Heroku [docs](https://devcenter.heroku.com/articles/procfile#deploying-to-heroku) regarding more details on deployment. Note, that you have to set some environment variables, see parameters in [logic/config.py](logic/config.py).
 
 ### RabbitMQ
 

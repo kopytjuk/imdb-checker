@@ -12,13 +12,13 @@ class AppSettings(BaseSettings):
 
     OMDB_API_KEY: str = Field(..., env='OMDB_API_KEY')
 
-    # Telegram
+    # Telegram notifications
     TELEGRAM_BOT_TOKEN: str = Field(..., env='TELEGRAM_BOT_TOKEN')
     TELEGRAM_CHAT_ID: int = Field(..., env='TELEGRAM_CHAT_ID')
 
-    # Celery
+    # Celery broker
     CELERY_BROKER_URL: str = Field('amqp://localhost', env='CELERY_BROKER_URL')
-    CELERY_RESULT_URL: str = Field('db+sqlite:///results.sqlite',
+    CELERY_RESULT_URL: str = Field('db+sqlite:///results.sqlite',  # SQlite for local development
                                    env='CELERY_RESULT_URL')
     CELERY_BROKER_POOL_LIMIT: int = Field(10, env='CELERY_BROKER_POOL_LIMIT')
 
